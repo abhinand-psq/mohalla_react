@@ -1,0 +1,43 @@
+.app {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.main-container {
+  padding-top: 48px;
+  /* Navbar height */
+  display: flex;
+  justify-content: center;
+}
+
+.content-area {
+  margin-left: 270px;
+  /* Sidebar width */
+  display: flex;
+  padding: 24px;
+  width: 100%;
+  max-width: 1200px;
+  /* Limit max width for large screens */
+  justify-content: center;
+  /* Center feed and right sidebar */
+}
+
+@media (max-width: 960px) {
+  .right-sidebar {
+    display: none;
+  }
+
+  .content-area {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .content-area {
+    margin-left: 0;
+  }
+}

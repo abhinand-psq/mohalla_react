@@ -1,0 +1,49 @@
+import React from 'react';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Feed from './components/Feed';
+import RightSidebar from './components/RightSidebar';
+import CommunityPage from './components/CommunityPage';
+import SignupPage from './components/SignupPage';
+import LoginPage from './components/LoginPage';
+import CreatePostModal from './components/CreatePostModal';
+import { CreatePostProvider } from './context/CreatePostContext';
+import './App.css';
+
+function Layout() {
+  return (
+    <div className="app">
+      <Navbar />
+      <div className="main-container">
+        <Sidebar />
+        <div className="content-area">
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <CreatePostProvider>
+      <CreatePostModal />
+      <Routes>
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={
+            <>
+              <Feed />
+              <RightSidebar />
+            </>
+          } />
+          <Route path="r/:subreddit" element={<CommunityPage />} />
+        </Route>
+      </Routes>
+    </CreatePostProvider>
+  );
+}
+
+export default App;

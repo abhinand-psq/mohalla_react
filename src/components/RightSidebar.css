@@ -1,0 +1,196 @@
+.right-sidebar {
+    width: 312px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sidebar-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 12px;
+    background-color: #F8F9FA;
+    /* Slightly different header bg? Or just plain */
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.02));
+}
+
+.card-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.community-list {
+    padding: 8px 0;
+}
+
+.community-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+}
+
+.community-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.community-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+}
+
+.community-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.community-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.community-name:hover {
+    text-decoration: underline;
+}
+
+.community-members {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.join-btn {
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: var(--color-secondary);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.join-btn:hover {
+    background-color: #0060A8;
+    /* Darker blue */
+}
+
+/* Premium Card */
+.premium-card {
+    background: linear-gradient(135deg, #FF4500 0%, #FF8717 100%);
+    color: white;
+    border: none;
+}
+
+.premium-content {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.premium-icon {
+    margin-bottom: 4px;
+}
+
+.premium-text h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.premium-text p {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.premium-btn {
+    background-color: white;
+    color: #FF4500;
+    padding: 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.premium-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Home Card */
+.home-banner {
+    height: 34px;
+    background-color: var(--color-secondary);
+}
+
+.home-content {
+    padding: 12px;
+}
+
+.home-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: -24px;
+    margin-bottom: 8px;
+}
+
+.home-snoo {
+    width: 40px;
+    height: 68px;
+    /* Snoo height */
+    background-image: url('https://www.redditstatic.com/desktop2x/img/id-cards/snoo-home@2x.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.home-content p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: var(--color-text-primary);
+}
+
+.create-post-btn-large {
+    width: 100%;
+    padding: 8px;
+    border-radius: 20px;
+    background-color: var(--color-primary);
+    /* Reddit Orange */
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    transition: background-color 0.2s;
+}
+
+.create-post-btn-large:hover {
+    background-color: #D93A00;
+}
+
+.create-community-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 20px;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.create-community-btn:hover {
+    background-color: rgba(255, 69, 0, 0.05);
+}
