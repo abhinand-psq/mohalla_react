@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Post from './Post';
 import { useCreatePost } from '../context/CreatePostContext';
 import './Feed.css';
@@ -7,58 +9,33 @@ const Feed = () => {
     const [type, settype] = useState('best');
     const { openCreatePostModal } = useCreatePost();
 
-    const posts = [
-        {
-            id: 2,
-            subreddit: 'pics',
-            author: 'naturePhotog',
-            time: '2 hours ago',
-            title: 'Captured this stunning sunset over the mountains',
-            image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-            votes: 8400,
-            comments: 234
-        },
-        {
-            id: 3,
-            subreddit: 'worldnews',
-            author: 'newsbot',
-            time: '5 hours ago',
-            title: 'Global renewable energy usage hits all-time high in 2024',
-            content: 'According to the latest report by the International Energy Agency, renewable energy sources now account for...',
-            votes: 21000,
-            comments: 1500
-        },
-        {
-            id: 4,
-            subreddit: 'gaming',
-            author: 'gamer_pro_99',
-            time: '1 hour ago',
-            title: 'The hidden easter egg in the latest update is mind-blowing!',
-            content: 'I was exploring the northern region of the map when I stumbled upon this cave...',
-            votes: 5600,
-            comments: 420
-        },
-        {
-            id: 5,
-            subreddit: 'AskReddit',
-            author: 'curious_mind',
-            time: '8 hours ago',
-            title: 'What is a skill that everyone should learn in their 20s?',
-            content: 'I am turning 20 soon and want to make the most of this decade. Any advice?',
-            votes: 32000,
-            comments: 4500
-        },
-        {
-            id: 6,
-            subreddit: 'aww',
-            author: 'cat_lover_123',
-            time: '3 hours ago',
-            title: 'My cat falling asleep on my keyboard while I try to work',
-            image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-            votes: 12500,
-            comments: 310
+    const fetchPosts = async () => {
+        const response = await axios.get('http://localhost:8000/api/v1/feed?page=1&limit=10', {
+            withCredentials: true
+        });
+
+        const feedData = response.data.posts || response.data.data || response.data || [];
+
+        if (Array.isArray(feedData)) {
+            return feedData.map(post => ({
+                id: post._id || post.id,
+                subreddit: post.community?.name || post.subreddit || 'announcements',
+                author: post.author?.username || post.author || 'deleted',
+                time: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'recently',
+                title: post.title,
+                content: post.content || '',
+                image: post.image || post.mediaUrl || null,
+                votes: post.upvotes || post.votes || 0,
+                comments: post.commentCount || post.comments || 0
+            }));
         }
-    ];
+        return [];
+    };
+
+    const { data: posts = [], isLoading: loading, isError } = useQuery({
+        queryKey: ['feed', 'best'], // Including type in queryKey for future filtering support
+        queryFn: fetchPosts,
+    });
 
     return (
         <div className="feed">
@@ -92,9 +69,18 @@ const Feed = () => {
                 <button onClick={() => settype('top')} className={`filter-btn ${type === 'top' ? 'active' : ''}`}>Top</button>
             </div>
 
-            {posts.map(post => (
-                <Post key={post.id} {...post} type={type} />
-            ))}
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-secondary)' }}>Loading posts...</div>
+            ) : posts.length > 0 ? (
+                posts.map(post => (
+                    <Post key={post.id} {...post} type={type} />
+                ))
+            ) : (
+                <div className="empty-feed-notice">
+                    <h3>Your feed is empty</h3>
+                    <p>It looks like you haven't joined any communities yet. Join some communities to start seeing posts!</p>
+                </div>
+            )}
         </div>
     );
 };

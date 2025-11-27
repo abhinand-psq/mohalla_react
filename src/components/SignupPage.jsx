@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSignup } from '../hooks/useAuth';
 import './SignupPage.css';
 
 const SignupPage = () => {
@@ -24,10 +26,21 @@ const SignupPage = () => {
         }));
     };
 
+    const navigate = useNavigate();
+    const { mutate: signup, isPending, error } = useSignup();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
-        // Add signup logic here
+        signup(formData, {
+            onSuccess: () => {
+                navigate('/login');
+            },
+            onError: (err) => {
+                console.error('Signup failed:', err);
+                // You might want to show an error message to the user here
+            }
+        });
     };
 
     return (
@@ -188,7 +201,10 @@ const SignupPage = () => {
                         </div>
                     </div>
 
-                    <button type="submit" className="signup-btn">Sign Up</button>
+                    <button type="submit" className="signup-btn" disabled={isPending}>
+                        {isPending ? 'Signing up...' : 'Sign Up'}
+                    </button>
+                    {error && <p className="error-message">{error.response?.data?.message || 'Signup failed. Please try again.'}</p>}
                 </form>
             </div>
         </div>

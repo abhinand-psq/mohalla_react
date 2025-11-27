@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLogin } from '../hooks/useAuth';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -16,10 +17,20 @@ const LoginPage = () => {
         }));
     };
 
+    const navigate = useNavigate();
+    const { mutate: login, isPending, error } = useLogin();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Login submitted:', formData);
-        // Add login logic here
+        login(formData, {
+            onSuccess: () => {
+                navigate('/');
+            },
+            onError: (err) => {
+                console.error('Login failed:', err);
+            }
+        });
     };
 
     return (
@@ -57,7 +68,10 @@ const LoginPage = () => {
                         />
                     </div>
 
-                    <button type="submit" className="login-btn">Sign In</button>
+                    <button type="submit" className="login-btn" disabled={isPending}>
+                        {isPending ? 'Signing In...' : 'Sign In'}
+                    </button>
+                    {error && <p className="error-message">{error.response?.data?.message || 'Login failed. Please check your credentials.'}</p>}
                 </form>
 
                 <div className="login-footer">

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './Post.css';
 
 const Post = ({ subreddit, author, time, title, content, image, votes, comments, type }) => {
-    console.log(type);
     const [voteCount, setVoteCount] = useState(votes);
     const [voteStatus, setVoteStatus] = useState(null); // 'up', 'down', or null
 
