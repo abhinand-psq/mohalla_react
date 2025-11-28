@@ -14,28 +14,34 @@ const Feed = () => {
             withCredentials: true
         });
 
-        const feedData = response.data.posts || response.data.data || response.data || [];
+        const feedData = response.data.data || [];
 
-        if (Array.isArray(feedData)) {
-            return feedData.map(post => ({
-                id: post._id || post.id,
-                subreddit: post.community?.name || post.subreddit || 'announcements',
-                author: post.author?.username || post.author || 'deleted',
+        return feedData.map(post => {
+            const mediaItem = post.media && post.media.length > 0 ? post.media[0] : null;
+
+            return {
+                id: post._id,
+                subreddit: post.community?.name || 'announcements',
+                author: post.author?.username || 'deleted',
                 time: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'recently',
-                title: post.title,
-                content: post.content || '',
-                image: post.image || post.mediaUrl || null,
-                votes: post.upvotes || post.votes || 0,
-                comments: post.commentCount || post.comments || 0
-            }));
-        }
-        return [];
+                title: post.content, // Using content as title since there is no title in the response
+                content: post.content,
+                image: mediaItem ? mediaItem.url : null,
+                width: mediaItem ? mediaItem.width : null,
+                votes: post.stats?.likesCount || 0,
+                comments: post.stats?.commentsCount || 0
+            };
+        });
     };
 
     const { data: posts = [], isLoading: loading, isError } = useQuery({
         queryKey: ['feed', 'best'], // Including type in queryKey for future filtering support
         queryFn: fetchPosts,
     });
+
+
+    console.log(posts);
+
 
     return (
         <div className="feed">
@@ -73,6 +79,7 @@ const Feed = () => {
                 <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-secondary)' }}>Loading posts...</div>
             ) : posts.length > 0 ? (
                 posts.map(post => (
+
                     <Post key={post.id} {...post} type={type} />
                 ))
             ) : (
