@@ -25,9 +25,12 @@ function Layout() {
   );
 }
 
+import { Toaster } from 'sonner';
+
 function App() {
   return (
     <CreatePostProvider>
+      <Toaster position="top-right" richColors />
       <CreatePostModal />
       <Routes>
         <Route path="/signup" element={<SignupPage />} />

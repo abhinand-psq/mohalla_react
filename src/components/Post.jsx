@@ -2,9 +2,24 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Post.css';
 
-const Post = ({ subreddit, author, time, title, content, image, votes, comments, type }) => {
+const Post = ({ subreddit, communityId, author, time, title, description, content, image, votes, comments, type, postType }) => {
     const [voteCount, setVoteCount] = useState(votes);
     const [voteStatus, setVoteStatus] = useState(null); // 'up', 'down', or null
+
+    const getPostTypeStyle = (type) => {
+        switch (type) {
+            case 'announcement':
+                return { backgroundColor: '#0079D3', color: 'white' };
+            case 'discussion':
+                return { backgroundColor: '#FF4500', color: 'white' };
+            case 'repost':
+                return { backgroundColor: '#FFB000', color: 'black' };
+            case 'system':
+                return { backgroundColor: '#46D160', color: 'white' };
+            default:
+                return { backgroundColor: '#3A3A3C', color: '#D7DADC' }; // Default for 'post'
+        }
+    };
 
     const handleUpvote = () => {
         if (voteStatus === 'up') {
@@ -53,13 +68,41 @@ const Post = ({ subreddit, author, time, title, content, image, votes, comments,
             <div className="post-content">
                 <div className="post-header">
                     <div className="subreddit-icon"></div>
-                    <Link to={`/r/${subreddit}`} className="subreddit-name" onClick={(e) => e.stopPropagation()}>r/{subreddit}</Link>
+                    <Link to={`/r/${communityId || subreddit}`} className="subreddit-name" onClick={(e) => e.stopPropagation()}>r/{subreddit}</Link>
                     <span className="post-meta">• Posted by u/{author} • {time}</span>
                 </div>
 
-                <h2 className="post-title">{title}</h2>
+                <div className="post-title-container" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <h2 className="post-title" style={{ margin: 0 }}>{title}</h2>
+                    {postType && postType !== 'post' && (
+                        <span style={{
+                            fontSize: '12px',
+                            padding: '2px 8px',
+                            borderRadius: '12px',
+                            fontWeight: 'bold',
+                            ...getPostTypeStyle(postType)
+                        }}>
+                            {postType.charAt(0).toUpperCase() + postType.slice(1)}
+                        </span>
+                    )}
+                </div>
 
-                {content && <p className="post-text">{content}</p>}
+                {description && (
+                    <div className="post-description" style={{
+                        fontSize: '14px',
+                        color: '#D7DADC',
+                        marginTop: '8px',
+                        marginBottom: '12px',
+                        padding: '10px',
+                        backgroundColor: '#272729',
+                        borderRadius: '4px',
+                        borderLeft: '4px solid #D7DADC'
+                    }}>
+                        {description}
+                    </div>
+                )}
+
+                {content && content !== title && <p className="post-text">{content}</p>}
 
                 {image && (
                     <div className="post-image-container">

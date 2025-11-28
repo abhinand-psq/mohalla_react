@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
@@ -34,6 +35,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['communities'] });
             onClose();
+            toast.success('Community created successfully!');
             // Redirect to home feed as requested
             navigate('/');
         },
@@ -41,7 +43,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
             if (error.response && error.response.status === 401) {
                 navigate('/login');
             } else {
-                alert(error.response?.data?.message || 'Failed to create community');
+                toast.error(error.response?.data?.message || 'Failed to create community');
             }
         }
     });
@@ -60,7 +62,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
         const file = e.target.files[0];
         if (file) {
             if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
-                alert('Only JPEG, JPG, and PNG files are allowed.');
+                toast.error('Only JPEG, JPG, and PNG files are allowed.');
                 return;
             }
 

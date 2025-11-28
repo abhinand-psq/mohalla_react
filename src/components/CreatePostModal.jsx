@@ -1,9 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { useCreatePost } from '../context/CreatePostContext';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import api from '../api/axios';
 import './CreatePostModal.css';
 
 const CreatePostModal = () => {
     const { isCreatePostModalOpen, closeCreatePostModal } = useCreatePost();
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState('post');
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
@@ -13,15 +20,29 @@ const CreatePostModal = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const fileInputRef = useRef(null);
 
-    const communities = [
-        { id: 'tech', name: 'r/technology', icon: '💻' },
-        { id: 'react', name: 'r/reactjs', icon: '⚛️' },
-        { id: 'js', name: 'r/javascript', icon: '📜' },
-        { id: 'web', name: 'r/webdev', icon: '🌐' },
-        { id: 'game', name: 'r/gaming', icon: '🎮' },
-    ];
+    const { data: communitiesData, isLoading: isCommunitiesLoading } = useQuery({
+        queryKey: ['myCommunitiesMin'],
+        queryFn: async () => {
+            const response = await api.get('/communities/get/min');
+            return response.data;
+        },
+        retry: false
+    });
 
-    const [selectedCommunity, setSelectedCommunity] = useState(communities[0]);
+    const communities = communitiesData?.data?.map(comm => ({
+        id: comm.id,
+        name: comm.name,
+        icon: comm.icon?.url ? <img src={comm.icon.url} alt={comm.name} style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} /> : 'r/'
+    })) || [];
+
+    const [selectedCommunity, setSelectedCommunity] = useState(null);
+
+    // Set default selected community when data is loaded
+    React.useEffect(() => {
+        if (communities.length > 0 && !selectedCommunity) {
+            setSelectedCommunity(communities[0]);
+        }
+    }, [communities, selectedCommunity]);
 
     const postTypes = [
         { id: 'post', label: 'Just a Post' },
@@ -33,19 +54,66 @@ const CreatePostModal = () => {
     const [selectedPostType, setSelectedPostType] = useState(postTypes[0]);
     const [isPostTypeDropdownOpen, setIsPostTypeDropdownOpen] = useState(false);
 
+    const createPostMutation = useMutation({
+        mutationFn: async (newPostData) => {
+            const response = await api.post('/posts/create', newPostData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success('Post created successfully!');
+            queryClient.invalidateQueries({ queryKey: ['feed'] });
+            if (selectedCommunity?.id) {
+                queryClient.invalidateQueries({ queryKey: ['communityPosts', selectedCommunity.id] });
+            }
+            closeCreatePostModal();
+            // Reset form
+            setTitle('');
+            setBody('');
+            setUrl('');
+            setSelectedFile(null);
+            setPreviewUrl(null);
+            setActiveTab('post');
+        },
+        onError: (error) => {
+            if (error.response && error.response.status === 401) {
+                navigate('/login');
+            } else {
+                toast.error(error.response?.data?.message || 'Failed to create post');
+            }
+        }
+    });
+
     if (!isCreatePostModalOpen) return null;
 
     const handlePost = () => {
-        console.log({
-            type: activeTab,
-            postType: selectedPostType.id,
-            community: selectedCommunity.name,
-            title,
-            body: activeTab === 'post' ? body : undefined,
-            url: activeTab === 'link' ? url : undefined,
-            file: activeTab === 'image' ? selectedFile : undefined
-        });
-        closeCreatePostModal();
+        if (!selectedCommunity) {
+            toast.error('Please select a community');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('communityId', selectedCommunity.id);
+        formData.append('content', title); // User requirement: content user choose as title
+
+        if (body) {
+            formData.append('description', body); // User requirement: description user choose as description
+        }
+
+        formData.append('postType', selectedPostType.id);
+
+        if (activeTab === 'image' && selectedFile) {
+            formData.append('media', selectedFile);
+        }
+
+        if (activeTab === 'link' && url) {
+            formData.append('url', url);
+        }
+
+        createPostMutation.mutate(formData);
     };
 
     const handleFileSelect = (e) => {
@@ -91,10 +159,16 @@ const CreatePostModal = () => {
                                 className="dropdown-trigger"
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             >
-                                <div className="selected-community">
-                                    <div className="community-icon-small">{selectedCommunity.icon}</div>
-                                    <span>{selectedCommunity.name}</span>
-                                </div>
+                                {selectedCommunity ? (
+                                    <div className="selected-community">
+                                        <div className="community-icon-small">{selectedCommunity.icon}</div>
+                                        <span>{selectedCommunity.name}</span>
+                                    </div>
+                                ) : (
+                                    <div className="selected-community">
+                                        <span>{isCommunitiesLoading ? 'Loading...' : 'Select a community'}</span>
+                                    </div>
+                                )}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
@@ -216,45 +290,58 @@ const CreatePostModal = () => {
                         )}
 
                         {activeTab === 'image' && (
-                            <div className="input-group">
-                                {!selectedFile ? (
-                                    <div
-                                        className="file-upload-area"
-                                        onClick={() => fileInputRef.current.click()}
-                                    >
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            onChange={handleFileSelect}
-                                            accept="image/*,video/*"
-                                            style={{ display: 'none' }}
-                                        />
-                                        <div className="upload-icon">
-                                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                <polyline points="17 8 12 3 7 8"></polyline>
-                                                <line x1="12" y1="3" x2="12" y2="15"></line>
-                                            </svg>
+                            <>
+                                <div className="input-group">
+                                    {!selectedFile ? (
+                                        <div
+                                            className="file-upload-area"
+                                            onClick={() => fileInputRef.current.click()}
+                                        >
+                                            <input
+                                                type="file"
+                                                ref={fileInputRef}
+                                                onChange={handleFileSelect}
+                                                accept="image/*,video/*"
+                                                style={{ display: 'none' }}
+                                            />
+                                            <div className="upload-icon">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                                </svg>
+                                            </div>
+                                            <span className="upload-text">Upload Image or Video</span>
+                                            <span className="upload-subtext">Drag and drop or click to upload</span>
                                         </div>
-                                        <span className="upload-text">Upload Image or Video</span>
-                                        <span className="upload-subtext">Drag and drop or click to upload</span>
-                                    </div>
-                                ) : (
-                                    <div className="file-preview">
-                                        {selectedFile.type.startsWith('video') ? (
-                                            <video src={previewUrl} controls />
-                                        ) : (
-                                            <img src={previewUrl} alt="Preview" />
-                                        )}
-                                        <button className="remove-file-btn" onClick={removeFile}>
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                                    ) : (
+                                        <div className="file-preview">
+                                            {selectedFile.type.startsWith('video') ? (
+                                                <video src={previewUrl} controls />
+                                            ) : (
+                                                <img src={previewUrl} alt="Preview" />
+                                            )}
+                                            <button className="remove-file-btn" onClick={removeFile}>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="input-group">
+                                    <label>Description (optional)</label>
+                                    <textarea
+                                        className="content-textarea"
+                                        placeholder="Add a description..."
+                                        value={body}
+                                        onChange={(e) => setBody(e.target.value)}
+                                        style={{ minHeight: '80px' }}
+                                    />
+                                </div>
+                            </>
                         )}
 
                         {activeTab === 'link' && (
@@ -289,13 +376,13 @@ const CreatePostModal = () => {
                     <button
                         className="post-btn"
                         onClick={handlePost}
-                        disabled={!title}
+                        disabled={!title || createPostMutation.isPending}
                     >
-                        Post
+                        {createPostMutation.isPending ? 'Posting...' : 'Post'}
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

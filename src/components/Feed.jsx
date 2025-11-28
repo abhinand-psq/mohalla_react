@@ -22,9 +22,12 @@ const Feed = () => {
             return {
                 id: post._id,
                 subreddit: post.community?.name || 'announcements',
+                communityId: post.community?._id,
                 author: post.author?.username || 'deleted',
                 time: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'recently',
                 title: post.content, // Using content as title since there is no title in the response
+                description: post.description,
+                postType: post.postType || 'post',
                 content: post.content,
                 image: mediaItem ? mediaItem.url : null,
                 width: mediaItem ? mediaItem.width : null,

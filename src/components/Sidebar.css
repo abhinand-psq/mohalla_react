@@ -48,4 +48,18 @@
     width: 20px;
     text-align: center;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-loading,
+.sidebar-empty-state {
+    padding: 8px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.sidebar-empty-state p {
+    margin: 0;
 }

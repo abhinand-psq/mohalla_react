@@ -1,89 +1,104 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import api from '../api/axios';
 import Post from './Post';
 import { useCreatePost } from '../context/CreatePostContext';
 import './CommunityPage.css';
 
 const CommunityPage = () => {
-    const { subreddit } = useParams();
+    const { subreddit: communityId } = useParams();
     const [activeTab, setActiveTab] = useState('Posts');
     const { openCreatePostModal } = useCreatePost();
+    const navigate = useNavigate();
 
-    // Mock data based on the subreddit
-    const communityData = {
-        title: `r/${subreddit}`,
-        subtitle: `r/${subreddit}`,
-        members: '12.4M',
-        online: '42.3k',
-        description: `Subreddit dedicated to the news and discussions about the creation and use of ${subreddit} and its surrounding issues.`,
-        created: 'Jan 25, 2008',
-        bannerColor: '#33a8ff',
-        iconColor: '#0079d3'
-    };
-
-    const rules = [
-        "Follow Reddiquette",
-        "No personal information",
-        "No editorialized titles",
-        "No old news",
-        "No images/videos"
-    ];
-
-    const moderators = [
-        "moderator1",
-        "moderator2",
-        "moderator3"
-    ];
-
-    const posts = [
-        {
-            id: 1,
-            subreddit: subreddit,
-            author: 'techEnthusiast42',
-            time: '4 hours ago',
-            title: `New breakthrough in ${subreddit} allows computers to understand context better than ever`,
-            content: 'Researchers at MIT have developed a new neural network architecture that significantly improves contextual understanding...',
-            votes: 15200,
-            comments: 892
+    const { data: communityData, isLoading, isError, error: communityError } = useQuery({
+        queryKey: ['community', communityId],
+        queryFn: async () => {
+            const response = await api.get(`/communities/${communityId}`);
+            return response.data.data;
         },
-        {
-            id: 2,
-            subreddit: subreddit,
-            author: 'futureNow',
-            time: '7 hours ago',
-            title: `Apple announces new privacy features in iOS 18 related to ${subreddit}`,
-            content: 'The latest update includes end-to-end encryption for all iCloud data and advanced tracking prevention...',
-            votes: 9900,
-            comments: 543
+        retry: false
+    });
+
+    const { data: postsData, isLoading: isPostsLoading, error: postsError } = useQuery({
+        queryKey: ['communityPosts', communityId],
+        queryFn: async () => {
+            const response = await api.get(`/posts/community/${communityId}`);
+            return response.data;
         },
-        {
-            id: 3,
-            subreddit: subreddit,
-            author: 'gadgetReviewer',
-            time: '10 hours ago',
-            title: `Tesla's new battery technology promises 500-mile range`,
-            content: 'The company unveiled its latest battery technology at the shareholder meeting, claiming a 40% improvement in energy density...',
-            votes: 6500,
-            comments: 432
+        enabled: !!communityId,
+        retry: false
+    });
+
+    useEffect(() => {
+        if ((communityError?.response?.status === 401) || (postsError?.response?.status === 401)) {
+            navigate('/login');
         }
-    ];
+    }, [communityError, postsError, navigate]);
+
+    const posts = postsData?.data?.map(post => {
+        const mediaItem = post.media && post.media.length > 0 ? post.media[0] : null;
+        return {
+            id: post._id,
+            subreddit: communityData?.name || 'loading...',
+            communityId: communityId,
+            author: post.author?.username || 'deleted',
+            time: post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'recently',
+            title: post.content, // Using content as title since there is no title in the response
+            description: post.description,
+            postType: post.postType || 'post',
+            content: post.content,
+            image: mediaItem ? mediaItem.url : null,
+            width: mediaItem ? mediaItem.width : null,
+            votes: post.stats?.likesCount || 0,
+            comments: post.stats?.commentsCount || 0
+        };
+    }) || [];
+
+    if (isLoading) {
+        return <div className="loading-container">Loading community details...</div>;
+    }
+
+    if (isError || !communityData) {
+        return (
+            <div className="error-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
+                <img src="/assets/robot_guard.png" alt="Oops" style={{ maxWidth: '300px', marginBottom: '20px' }} />
+                <h2>Oops! Community not found.</h2>
+                <p>The community you are looking for does not exist or has been removed.</p>
+                <button className="btn btn-primary" onClick={() => navigate('/')} style={{ marginTop: '20px' }}>Go Home</button>
+            </div>
+        );
+    }
 
     return (
         <div className="community-page">
-            <div className="community-banner" style={{ backgroundColor: communityData.bannerColor }}></div>
+            <div
+                className="community-banner"
+                style={{
+                    backgroundImage: communityData.banner?.url ? `url(${communityData.banner.url})` : 'none',
+                    backgroundColor: communityData.banner?.url ? 'transparent' : '#33a8ff',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+            ></div>
 
             <div className="community-header">
                 <div className="community-header-content">
                     <div className="community-icon-large">
-                        {subreddit ? subreddit[0].toUpperCase() : 'R'}
+                        {communityData.icon?.url ? (
+                            <img src={communityData.icon.url} alt={communityData.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                        ) : (
+                            communityData.name ? communityData.name[0].toUpperCase() : 'R'
+                        )}
                     </div>
                     <div className="community-title-container">
-                        <h1 className="community-title">{communityData.title}</h1>
-                        <div className="community-subtitle">{communityData.subtitle}</div>
+                        <h1 className="community-title">{communityData.name}</h1>
+                        <div className="community-subtitle">r/{communityData.name}</div>
                     </div>
                     <div className="community-actions">
-                        <button className="back-btn" onClick={() => window.history.back()}>Back</button>
-                        <button className="join-btn">Join</button>
+                        <button className="back-btn" onClick={() => navigate(-1)}>Back</button>
+                        <button className="join-btn">{communityData.membershipStatus === 'joined' ? 'Joined' : 'Join'}</button>
                         <button className="bell-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -130,9 +145,19 @@ const CommunityPage = () => {
                         </button>
                     </div>
 
-                    {posts.map(post => (
-                        <Post key={post.id} {...post} />
-                    ))}
+                    {isPostsLoading ? (
+                        <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-secondary)' }}>Loading posts...</div>
+                    ) : posts.length > 0 ? (
+                        posts.map(post => (
+                            <Post key={post.id} {...post} />
+                        ))
+                    ) : (
+                        <div className="empty-feed-notice">
+                            <h3>No posts yet</h3>
+                            <p>Be the first to create a post in this community!</p>
+                            <button className="btn btn-primary" onClick={openCreatePostModal} style={{ marginTop: '10px' }}>Create Post</button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="community-sidebar">
@@ -144,12 +169,12 @@ const CommunityPage = () => {
                             <p className="about-description">{communityData.description}</p>
                             <div className="community-stats">
                                 <div className="stat-item">
-                                    <span className="stat-number">{communityData.members}</span>
+                                    <span className="stat-number">{communityData.stats?.membersCount || 0}</span>
                                     <span className="stat-label">Members</span>
                                 </div>
                                 <div className="stat-item">
-                                    <span className="stat-number">{communityData.online}</span>
-                                    <span className="stat-label">Online</span>
+                                    <span className="stat-number">{communityData.stats?.postsCount || 0}</span>
+                                    <span className="stat-label">Posts</span>
                                 </div>
                             </div>
                             <div className="created-date">
@@ -159,25 +184,28 @@ const CommunityPage = () => {
                                     <line x1="8" y1="2" x2="8" y2="6" />
                                     <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
-                                Created {communityData.created}
+                                Created {new Date(communityData.createdAt).toLocaleDateString()}
                             </div>
                             <button className="create-post-btn-full" onClick={openCreatePostModal}>Create Post</button>
                         </div>
                     </div>
 
-                    <div className="community-card">
-                        <div className="card-header">
-                            Community Rules
-                        </div>
-                        <div className="card-content">
-                            {rules.map((rule, index) => (
-                                <div key={index} className="rule-item">
-                                    <span className="rule-number">{index + 1}.</span>
-                                    <span>{rule}</span>
+                    {communityData.allowedMarketplaceCategories && communityData.allowedMarketplaceCategories.length > 0 && (
+                        <div className="community-card">
+                            <div className="card-header">
+                                Marketplace Categories
+                            </div>
+                            <div className="card-content">
+                                <div className="categories-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {communityData.allowedMarketplaceCategories.map((cat, index) => (
+                                        <span key={index} style={{ background: '#f0f2f5', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
+                                            {cat}
+                                        </span>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="community-card">
                         <div className="card-header">
@@ -185,12 +213,18 @@ const CommunityPage = () => {
                         </div>
                         <div className="card-content">
                             <div className="mod-list">
-                                {moderators.map((mod, index) => (
-                                    <div key={index} className="mod-item">
-                                        <div className="user-avatar-small" style={{ width: 24, height: 24, fontSize: 12 }}>u</div>
-                                        u/{mod}
+                                {communityData.createdBy && (
+                                    <div className="mod-item">
+                                        <div className="user-avatar-small" style={{ width: 24, height: 24, fontSize: 12 }}>
+                                            {communityData.createdBy.profilePic?.url ? (
+                                                <img src={communityData.createdBy.profilePic.url} alt="mod" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+                                            ) : (
+                                                'u'
+                                            )}
+                                        </div>
+                                        u/{communityData.createdBy.username}
                                     </div>
-                                ))}
+                                )}
                             </div>
                             <button className="message-mods-btn">Message the mods</button>
                         </div>
