@@ -8,6 +8,7 @@ import CommunityPage from './components/CommunityPage';
 import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import CreatePostModal from './components/CreatePostModal';
+import ShopPage from './components/ShopPage';
 import { CreatePostProvider } from './context/CreatePostContext';
 import './App.css';
 
@@ -44,6 +45,7 @@ function App() {
           } />
           <Route path="r/:subreddit" element={<CommunityPage />} />
         </Route>
+        <Route path="/shop/:shopId/:shopName" element={<ShopPage />} />
       </Routes>
     </CreatePostProvider>
   );

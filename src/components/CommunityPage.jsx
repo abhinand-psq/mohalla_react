@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import Post from './Post';
+import Marketplace from './Marketplace';
 import { useCreatePost } from '../context/CreatePostContext';
 import './CommunityPage.css';
 
@@ -122,40 +123,55 @@ const CommunityPage = () => {
 
             <div className="community-container">
                 <div className="community-feed">
-                    <div className="create-post-container">
-                        <div className="user-avatar-small">U</div>
-                        <input
-                            type="text"
-                            placeholder="Create Post"
-                            className="create-post-input"
-                            onClick={openCreatePostModal}
-                        />
-                        <button className="create-post-icon-btn" onClick={openCreatePostModal}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" />
-                            </svg>
-                        </button>
-                        <button className="create-post-icon-btn" onClick={openCreatePostModal}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                            </svg>
-                        </button>
-                    </div>
+                    {activeTab === 'Posts' && (
+                        <>
+                            <div className="create-post-container">
+                                <div className="user-avatar-small">U</div>
+                                <input
+                                    type="text"
+                                    placeholder="Create Post"
+                                    className="create-post-input"
+                                    onClick={openCreatePostModal}
+                                />
+                                <button className="create-post-icon-btn" onClick={openCreatePostModal}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                        <circle cx="8.5" cy="8.5" r="1.5" />
+                                        <polyline points="21 15 16 10 5 21" />
+                                    </svg>
+                                </button>
+                                <button className="create-post-icon-btn" onClick={openCreatePostModal}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                    </svg>
+                                </button>
+                            </div>
 
-                    {isPostsLoading ? (
-                        <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-secondary)' }}>Loading posts...</div>
-                    ) : posts.length > 0 ? (
-                        posts.map(post => (
-                            <Post key={post.id} {...post} />
-                        ))
-                    ) : (
-                        <div className="empty-feed-notice">
-                            <h3>No posts yet</h3>
-                            <p>Be the first to create a post in this community!</p>
-                            <button className="btn btn-primary" onClick={openCreatePostModal} style={{ marginTop: '10px' }}>Create Post</button>
+                            {isPostsLoading ? (
+                                <div style={{ textAlign: 'center', padding: '20px', color: 'var(--color-text-secondary)' }}>Loading posts...</div>
+                            ) : posts.length > 0 ? (
+                                posts.map(post => (
+                                    <Post key={post.id} {...post} />
+                                ))
+                            ) : (
+                                <div className="empty-feed-notice">
+                                    <h3>No posts yet</h3>
+                                    <p>Be the first to create a post in this community!</p>
+                                    <button className="btn btn-primary" onClick={openCreatePostModal} style={{ marginTop: '10px' }}>Create Post</button>
+                                </div>
+                            )}
+                        </>
+                    )}
+
+                    {activeTab === 'Marketplace' && (
+                        <Marketplace communityData={communityData} />
+                    )}
+
+                    {(activeTab === 'About' || activeTab === 'Auctions') && (
+                        <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '4px', border: '1px solid #ccc' }}>
+                            <h3>{activeTab}</h3>
+                            <p>This feature is coming soon!</p>
                         </div>
                     )}
                 </div>
