@@ -27,6 +27,7 @@ function Layout() {
 }
 
 import { Toaster } from 'sonner';
+import SignupLoading from './components/SignupLoading';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="r/:subreddit" element={<CommunityPage />} />
         </Route>
         <Route path="/shop/:shopId/:shopName" element={<ShopPage />} />
+        <Route path="/check" element={<SignupLoading />} />
       </Routes>
     </CreatePostProvider>
   );

@@ -3,56 +3,59 @@
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: all 0.2s;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
 .post:hover {
-    border-color: #898989;
+    border-color: #A78BFA;
+    /* Light violet */
+    box-shadow: var(--shadow-md);
 }
 
 .post-sidebar {
-    width: 40px;
-    background-color: #F8F9FA;
+    width: 48px;
+    background-color: #F9FAFB;
+    /* Very light gray */
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px 4px;
-    border-top-left-radius: var(--radius-md);
-    border-bottom-left-radius: var(--radius-md);
+    padding: 12px 4px;
+    border-right: 1px solid transparent;
+    /* Or subtle border */
 }
 
 .vote-btn {
-    color: #878A8C;
-    padding: 2px;
+    color: var(--color-text-secondary);
+    padding: 4px;
     border-radius: 4px;
+    transition: all 0.2s;
 }
 
 .vote-btn:hover {
-    background-color: #E9F5FD;
-    color: var(--color-secondary);
-    /* Default hover color */
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .vote-btn.up:hover,
 .vote-btn.up.active {
     color: var(--color-primary);
-    background-color: #FFEBE6;
-    /* Light orange */
+    background-color: rgba(139, 92, 246, 0.1);
 }
 
 .vote-btn.down:hover,
 .vote-btn.down.active {
-    color: #7193FF;
-    background-color: #E9F5FD;
-    /* Light blue */
+    color: #EF4444;
+    /* Red */
+    background-color: rgba(239, 68, 68, 0.1);
 }
 
 .vote-count {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    margin: 4px 0;
+    margin: 8px 0;
     color: var(--color-text-primary);
 }
 
@@ -61,25 +64,25 @@
 }
 
 .vote-count.down {
-    color: #7193FF;
+    color: #EF4444;
 }
 
 .post-content {
     flex: 1;
-    padding: 8px 16px 8px 8px;
+    padding: 12px 16px;
 }
 
 .post-header {
     display: flex;
     align-items: center;
     font-size: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     gap: 8px;
 }
 
 .subreddit-icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background-color: var(--color-primary);
 }
@@ -87,6 +90,7 @@
 .subreddit-name {
     font-weight: 700;
     color: var(--color-text-primary);
+    font-size: 13px;
 }
 
 .subreddit-name:hover {
@@ -102,29 +106,41 @@
     font-weight: 600;
     color: var(--color-text-primary);
     margin-bottom: 12px;
-    line-height: 22px;
+    line-height: 1.4;
 }
 
 .post-text {
     font-size: 14px;
-    line-height: 21px;
-    margin-bottom: 12px;
+    line-height: 1.6;
+    margin-bottom: 16px;
     color: var(--color-text-primary);
+}
+
+.post-description {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background-color: var(--color-bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--color-border);
 }
 
 .post-image-container {
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     border-radius: var(--radius-md);
     overflow: hidden;
-    background-color: #000;
+    background-color: #F3F4F6;
     display: flex;
     justify-content: center;
+    border: 1px solid var(--color-border);
 }
 
 .post-image {
     max-width: 100%;
-    max-height: 512px;
+    max-height: 600px;
     object-fit: contain;
 }
 
@@ -137,15 +153,17 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px;
-    color: #878A8C;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 4px;
+    padding: 8px 12px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    transition: all 0.2s;
 }
 
 .footer-btn:hover {
     background-color: var(--color-hover);
+    color: var(--color-text-primary);
 }
 
 .footer-btn.icon-only {

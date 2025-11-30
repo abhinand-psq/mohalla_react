@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import './Sidebar.css';
 
 const Sidebar = () => {
+    const location = useLocation();
+    const currentPath = location.pathname;
     const { data: communitiesData, isLoading, error } = useQuery({
         queryKey: ['myCommunities'],
         queryFn: async () => {
@@ -29,12 +31,22 @@ const Sidebar = () => {
         <aside className="sidebar">
             <div className="sidebar-section">
                 <h3 className="sidebar-title">Feeds</h3>
-                <Link to="/" className="sidebar-item active">
-                    <span className="icon">🏠</span>
+                <Link to="/" className={`sidebar-item ${currentPath === '/' ? 'active' : ''}`}>
+                    <span className="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </span>
                     Home
                 </Link>
-                <Link to="/r/popular" className="sidebar-item">
-                    <span className="icon">🔥</span>
+                <Link to="/r/popular" className={`sidebar-item ${currentPath === '/r/popular' ? 'active' : ''}`}>
+                    <span className="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M23 6l-9.5 9.5-5-5L1 18"></path>
+                            <path d="M17 6h6v6"></path>
+                        </svg>
+                    </span>
                     Popular
                 </Link>
             </div>
@@ -52,7 +64,7 @@ const Sidebar = () => {
                         <Link
                             key={community._id}
                             to={`/r/${community._id}`}
-                            className="sidebar-item"
+                            className={`sidebar-item ${currentPath === `/r/${community._id}` ? 'active' : ''}`}
                         >
                             <span className="icon">
                                 {community.icon?.url ? (

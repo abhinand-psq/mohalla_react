@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSignup } from '../hooks/useAuth';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import SignupLoading from './SignupLoading';
 import './SignupPage.css';
 
 const SignupPage = () => {
@@ -18,6 +20,8 @@ const SignupPage = () => {
         ward: ''
     });
 
+    const [showLoading, setShowLoading] = useState(false);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -32,16 +36,24 @@ const SignupPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
+        setShowLoading(true);
         signup(formData, {
             onSuccess: () => {
-                navigate('/login');
+                setTimeout(() => {
+                    navigate('/login');
+                }, 10000);
             },
             onError: (err) => {
                 console.error('Signup failed:', err);
+                setShowLoading(false);
                 // You might want to show an error message to the user here
             }
         });
     };
+
+    if (showLoading) {
+        return <SignupLoading />;
+    }
 
     return (
         <div className="signup-container">

@@ -31,6 +31,8 @@ const RightSidebar = () => {
         }
     });
 
+
+
     const joinMutation = useMutation({
         mutationFn: async (communityId) => {
             const response = await api.post(`/communities/${communityId}/join`);
@@ -39,6 +41,7 @@ const RightSidebar = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['communities'] });
             queryClient.invalidateQueries({ queryKey: ['feed'] });
+            queryClient.invalidateQueries({ queryKey: ['myCommunities'] });
             setJoinError(null);
         },
         onError: (error) => {
@@ -78,20 +81,7 @@ const RightSidebar = () => {
             </div>
 
             {/* Premium Card */}
-            <div className="sidebar-card premium-card">
-                <div className="premium-content">
-                    <div className="premium-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <div className="premium-text">
-                        <h3>Reddit Premium</h3>
-                        <p>The best Reddit experience, with monthly Coins, exclusive awards, and no ads.</p>
-                    </div>
-                    <button className="premium-btn">Try Now</button>
-                </div>
-            </div>
+
 
             {/* Popular Communities */}
             {!isUnauthorized && (
