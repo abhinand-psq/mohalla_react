@@ -17,7 +17,7 @@
 /* Home Card */
 .home-banner {
     height: 48px;
-    background: var(--color-primary-gradient);
+    background: white;
 }
 
 .home-content {

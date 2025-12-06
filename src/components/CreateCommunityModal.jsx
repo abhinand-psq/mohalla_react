@@ -34,6 +34,8 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['communities'] });
+            queryClient.invalidateQueries({ queryKey: ['myCommunities'] });
+            queryClient.invalidateQueries({ queryKey: ['myCommunitiesMin'] });
             onClose();
             toast.success('Community created successfully!');
             // Redirect to home feed as requested

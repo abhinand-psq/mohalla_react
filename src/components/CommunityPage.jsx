@@ -4,14 +4,22 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 import Post from './Post';
 import Marketplace from './Marketplace';
+import ServiceList from './Services/ServiceList';
+import ServiceDetailPanel from './Services/ServiceDetailPanel';
+import CreateServiceForm from './Services/CreateServiceForm';
 import { useCreatePost } from '../context/CreatePostContext';
 import './CommunityPage.css';
+
 
 const CommunityPage = () => {
     const { subreddit: communityId } = useParams();
     const [activeTab, setActiveTab] = useState('Posts');
     const { openCreatePostModal } = useCreatePost();
     const navigate = useNavigate();
+
+    // Service State
+    const [selectedService, setSelectedService] = useState(null);
+    const [isCreateServiceOpen, setIsCreateServiceOpen] = useState(false);
 
     const { data: communityData, isLoading, isError, error: communityError } = useQuery({
         queryKey: ['community', communityId],
@@ -32,11 +40,24 @@ const CommunityPage = () => {
         retry: false
     });
 
+    const { data: servicesData, refetch: refetchServices, error: servicesError } = useQuery({
+        queryKey: ['communityServices', communityId],
+        queryFn: async () => {
+            const response = await api.get(`/communities/${communityId}/services`);
+            return response.data.data;
+        },
+        enabled: !!communityId,
+        retry: false
+    });
+    console.log("latest");
+
+    console.log(servicesData)
+
     useEffect(() => {
-        if ((communityError?.response?.status === 401) || (postsError?.response?.status === 401)) {
+        if ((communityError?.response?.status === 401) || (postsError?.response?.status === 401) || (servicesError?.response?.status === 401)) {
             navigate('/login');
         }
-    }, [communityError, postsError, navigate]);
+    }, [communityError, postsError, servicesError, navigate]);
 
     const posts = postsData?.data?.map(post => {
         const mediaItem = post.media && post.media.length > 0 ? post.media[0] : null;
@@ -109,7 +130,7 @@ const CommunityPage = () => {
                     </div>
                 </div>
                 <div className="community-tabs">
-                    {['Posts', 'About', 'Marketplace', 'Auctions'].map(tab => (
+                    {['Posts', 'About', 'Marketplace', 'Services', 'Auctions'].map(tab => (
                         <div
                             key={tab}
                             className={`tab-item ${activeTab === tab ? 'active' : ''}`}
@@ -168,6 +189,14 @@ const CommunityPage = () => {
                         <Marketplace communityData={communityData} />
                     )}
 
+                    {activeTab === 'Services' && (
+                        <ServiceList
+                            services={servicesData || []}
+                            onServiceClick={setSelectedService}
+                            onCreateService={() => setIsCreateServiceOpen(true)}
+                        />
+                    )}
+
                     {(activeTab === 'About' || activeTab === 'Auctions') && (
                         <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '4px', border: '1px solid #ccc' }}>
                             <h3>{activeTab}</h3>
@@ -209,7 +238,7 @@ const CommunityPage = () => {
                     {communityData.allowedMarketplaceCategories && communityData.allowedMarketplaceCategories.length > 0 && (
                         <div className="community-card">
                             <div className="card-header">
-                                Marketplace Categories
+                                <h4> Marketplace Categories</h4>
                             </div>
                             <div className="card-content">
                                 <div className="categories-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -225,7 +254,7 @@ const CommunityPage = () => {
 
                     <div className="community-card">
                         <div className="card-header">
-                            Moderators
+                            <h4>Moderators</h4>
                         </div>
                         <div className="card-content">
                             <div className="mod-list">
@@ -247,6 +276,26 @@ const CommunityPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Service Modals */}
+            {selectedService && (
+                <ServiceDetailPanel
+                    service={selectedService}
+                    onClose={() => setSelectedService(null)}
+                />
+            )}
+
+            {isCreateServiceOpen && (
+                <CreateServiceForm
+                    onClose={() => setIsCreateServiceOpen(false)}
+                    communityId={communityId}
+                    onSuccess={() => {
+                        setIsCreateServiceOpen(false);
+                        refetchServices();
+                    }}
+                    allowedCategories={communityData?.allowedMarketplaceCategories}
+                />
+            )}
         </div>
     );
 };
