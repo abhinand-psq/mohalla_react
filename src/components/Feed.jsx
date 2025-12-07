@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '../api/axios';
 import Post from './Post';
 import { useCreatePost } from '../context/CreatePostContext';
 import './Feed.css';
@@ -10,9 +10,7 @@ const Feed = () => {
     const { openCreatePostModal } = useCreatePost();
 
     const fetchPosts = async () => {
-        const response = await axios.get('http://localhost:8000/api/v1/feed?page=1&limit=10', {
-            withCredentials: true
-        });
+        const response = await api.get('/feed?page=1&limit=10');
 
         const feedData = response.data.data || [];
 
