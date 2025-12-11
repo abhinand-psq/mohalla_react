@@ -4,6 +4,8 @@ import { useCreatePost } from '../context/CreatePostContext';
 import { useUser, useLogout } from '../hooks/useAuth';
 import './Navbar.css';
 
+import { toast } from 'sonner';
+
 const Navbar = () => {
     const { openCreatePostModal } = useCreatePost();
     const { data: user } = useUser();
@@ -16,6 +18,11 @@ const Navbar = () => {
                 navigate('/login');
             }
         });
+    };
+
+    const handleSearch = (e) => {
+        toast.info("Search functionality will be implemented later");
+
     };
 
     return (
@@ -32,11 +39,11 @@ const Navbar = () => {
 
             <div className="navbar-center">
                 <div className="search-bar">
-                    <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" onClick={handleSearch} style={{ cursor: 'pointer' }}>
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" placeholder="Search Reddit" />
+                    <input type="text" placeholder="Search here" onKeyDown={handleSearch} />
                 </div>
             </div>
 
@@ -62,9 +69,9 @@ const Navbar = () => {
                         </button>
                         <div className="user-menu">
                             <div className="user-avatar">
-                                <span>{user.username ? user.username[0].toUpperCase() : 'U'}</span>
+                                <span >{user.username ? user.username[0].toUpperCase() : 'U'}</span>
                             </div>
-                            <button className="logout-btn" onClick={handleLogout}>
+                            <button className="logout-btn" onClick={handleLogout} title='logout'>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                     <polyline points="16 17 21 12 16 7"></polyline>

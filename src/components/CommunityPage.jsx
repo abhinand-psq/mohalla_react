@@ -9,6 +9,7 @@ import ServiceDetailPanel from './Services/ServiceDetailPanel';
 import CreateServiceForm from './Services/CreateServiceForm';
 import { useCreatePost } from '../context/CreatePostContext';
 import './CommunityPage.css';
+import AuctionsList from './Auctions/AuctionsList';
 
 
 const CommunityPage = () => {
@@ -197,7 +198,9 @@ const CommunityPage = () => {
                         />
                     )}
 
-                    {(activeTab === 'About' || activeTab === 'Auctions') && (
+                    {activeTab === 'Auctions' && <AuctionsList communityId={communityData._id} />}
+
+                    {activeTab === 'About' && (
                         <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '4px', border: '1px solid #ccc' }}>
                             <h3>{activeTab}</h3>
                             <p>This feature is coming soon!</p>

@@ -69,7 +69,7 @@ const RightSidebar = () => {
                         <div className="home-snoo"></div>
                         <h3>Home</h3>
                     </div>
-                    <p>Your personal Reddit frontpage. Come here to check in with your favorite communities.</p>
+                    <p>Your personal mohalla frontpage. Come here to check in with your favorite communities and posts.</p>
 
                     <button className="create-post-btn-large" onClick={openCreatePostModal}>
                         Create Post
@@ -145,7 +145,7 @@ const RightSidebar = () => {
                     <span>Moderator Code of Conduct</span>
                 </div>
                 <div style={{ marginTop: '12px' }}>
-                    Reddit Inc © 2024. All rights reserved
+                    mohallahub © 2025. All rights reserved
                 </div>
             </div>
 
