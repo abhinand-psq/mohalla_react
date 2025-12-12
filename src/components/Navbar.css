@@ -1,3 +1,4 @@
+/* Existing Navbar Styles... */
 .navbar {
     display: flex;
     align-items: center;
@@ -19,6 +20,22 @@
     align-items: center;
     width: 280px;
     /* Match sidebar width */
+}
+
+.menu-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    padding: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.menu-toggle-btn:hover {
+    background-color: var(--color-hover);
 }
 
 .logo {
@@ -190,4 +207,35 @@
 .signup-nav-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    .navbar-left {
+        width: auto;
+    }
+
+    /* Hide navbar right on mobile */
+    .navbar-right {
+        display: none;
+    }
+
+    /* Expand search bar to fill remaining space */
+    .navbar-center {
+        margin: 0 0 0 16px;
+    }
+
+    .navbar {
+        padding: 0 16px;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-toggle-btn {
+        display: none;
+    }
 }

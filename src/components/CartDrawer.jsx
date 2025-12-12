@@ -30,7 +30,7 @@ const CartDrawer = ({ isOpen, onClose, cartItems, onRemoveItem }) => {
                                 </div>
                                 <div className="cart-item-details">
                                     <h4>{item.name}</h4>
-                                    <p className="cart-item-price">${item.price}</p>
+                                    <p className="cart-item-price">₹{item.price}</p>
                                 </div>
                                 <button className="remove-item-btn" onClick={() => onRemoveItem(index)}>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,7 +46,7 @@ const CartDrawer = ({ isOpen, onClose, cartItems, onRemoveItem }) => {
                 <div className="cart-footer">
                     <div className="cart-total">
                         <span>Total</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>{`₹ ${total.toFixed(2)}`}</span>
                     </div>
                     <button className="checkout-btn" disabled={cartItems.length === 0}>
                         Checkout

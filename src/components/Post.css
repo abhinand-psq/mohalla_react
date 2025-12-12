@@ -169,3 +169,74 @@
 .footer-btn.icon-only {
     padding: 8px;
 }
+
+/* Mobile Responsive */
+@media (max-width: 576px) {
+    .post {
+        display: flex;
+        flex-direction: column;
+        /* Stack vertically if needed, but keeping row usually works if sized right */
+    }
+
+    .post-sidebar {
+        /* On very small screens, maybe hide the side vote bar and put it in footer or make it horizontal? 
+           For now, let's keep it but ensure it fits. 
+           Actually, horizontal voting bar at bottom is often better on mobile.
+        */
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        padding: 8px 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        justify-content: flex-start;
+        gap: 12px;
+        background-color: transparent;
+        order: 2;
+        /* Move below content? Or keep at top? */
+        /* Let's try attempting to keep the classic left sidebar but make it strictly fixed width and content flexible */
+    }
+
+    /* Reverting to keep left sidebar but robust */
+    .post {
+        flex-direction: row;
+    }
+
+    .post-sidebar {
+        width: 40px;
+        /* slightly smaller */
+        padding: 8px 2px;
+        background-color: transparent;
+        /* cleaner look */
+        flex-shrink: 0;
+        /* Prevent shrinking */
+        display: flex;
+        flex-direction: column;
+        order: 0;
+    }
+
+    .post-content {
+        padding: 12px 8px;
+        width: calc(100% - 40px);
+    }
+
+    .vote-count {
+        font-size: 11px;
+    }
+
+    /* Ensure icon sizes don't overflow */
+    .subreddit-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .footer-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .footer-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+}

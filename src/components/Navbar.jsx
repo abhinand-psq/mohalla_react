@@ -6,7 +6,7 @@ import './Navbar.css';
 
 import { toast } from 'sonner';
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
     const { openCreatePostModal } = useCreatePost();
     const { data: user } = useUser();
     const { mutate: logout } = useLogout();
@@ -28,6 +28,13 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-left">
+                <button className="menu-toggle-btn" onClick={onMenuClick}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
                 <Link to="/" className="logo">
                     <svg viewBox="0 0 20 20" className="reddit-icon" fill="currentColor">
                         <circle cx="10" cy="10" r="10" fill="#8B5CF6" />

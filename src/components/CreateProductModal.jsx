@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import api from '../api/axios';
 import './CreateProductModal.css';
 
-const CreateProductModal = ({ isOpen, onClose, shopId, onProductCreated }) => {
+const CreateProductModal = ({ isOpen, onClose, shopId, onProductCreated, categories = [] }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const imageInputRef = useRef(null);
@@ -135,7 +135,7 @@ const CreateProductModal = ({ isOpen, onClose, shopId, onProductCreated }) => {
 
                         <div className="form-row">
                             <div className="form-group">
-                                <label>Price ($) <span className="required">*</span></label>
+                                <label>Price (₹) <span className="required">*</span></label>
                                 <input
                                     type="number"
                                     name="price"
@@ -164,14 +164,23 @@ const CreateProductModal = ({ isOpen, onClose, shopId, onProductCreated }) => {
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Category <span className="required">*</span></label>
-                                <input
-                                    type="text"
+                                <select
                                     name="category"
                                     value={formData.category}
                                     onChange={handleInputChange}
-                                    placeholder="e.g., Skincare"
                                     required
-                                />
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.length > 0 ? (
+                                        categories.map((cat, index) => (
+                                            <option key={index} value={typeof cat === 'string' ? cat : cat.name || cat.title}>
+                                                {typeof cat === 'string' ? cat : cat.name || cat.title}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option value="" disabled>No categories available</option>
+                                    )}
+                                </select>
                             </div>
                             <div className="form-group">
                                 <label>Condition</label>

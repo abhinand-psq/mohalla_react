@@ -45,7 +45,7 @@ const ServiceCard = ({ service, onClick, onCall, onSave }) => {
                 <h3 className="service-title">{title}</h3>
 
                 <div className="service-price">
-                    ${priceMin} - ${priceMax}
+                    ₹{priceMin} - ₹{priceMax}
                 </div>
 
                 <div className="service-footer">

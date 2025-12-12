@@ -155,8 +155,29 @@
 /* Grid */
 .auctions-container .auctions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* 3 cards per row on typical desktop (1200px container / 300px min card + gap) ~ 3 cards */
+    /* Using minmax(300px, 1fr) ensures cards don't get too small, but will fill row */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+    width: 100%;
+}
+
+@media (min-width: 1025px) {
+    .auctions-container .auctions-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .auctions-container .auctions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .auctions-container .auctions-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Auction Card */

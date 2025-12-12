@@ -15,11 +15,24 @@ import { CreatePostProvider } from './context/CreatePostContext';
 import './App.css';
 
 function Layout() {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
   return (
     <div className="app">
-      <Navbar />
+      <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
       <div className="main-container">
-        <Sidebar />
+        {/* Mobile Overlay */}
+        {isSidebarOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        <div className={`sidebar-wrapper ${isSidebarOpen ? 'open' : ''}`}>
+          <Sidebar />
+        </div>
+
         <div className="content-area">
           <Outlet />
         </div>
@@ -30,6 +43,7 @@ function Layout() {
 
 import { Toaster } from 'sonner';
 import SignupLoading from './components/SignupLoading';
+import BottomNav from './components/BottomNav';
 
 function App() {
   return (
@@ -48,11 +62,12 @@ function App() {
           } />
           <Route path="r/:subreddit" element={<CommunityPage />} />
           <Route path="auction/:auctionId" element={<AuctionDetails />} />
+          <Route path="my-auctions" element={<MyAuctions />} />
         </Route>
         <Route path="/shop/:shopId/:shopName" element={<ShopPage />} />
-        <Route path="/my-auctions" element={<MyAuctions />} />
         <Route path="/check" element={<SignupLoading />} />
       </Routes>
+      <BottomNav />
     </CreatePostProvider>
   );
 }

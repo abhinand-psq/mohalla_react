@@ -18,7 +18,7 @@ const ShopPage = () => {
     const { data: shopData } = useQuery({
         queryKey: ['shop', shopId],
         queryFn: async () => {
-            const response = await api.get(`/shop/${shopId}`);
+            const response = await api.get(`/shop/₹{shopId}`);
             return response.data;
         },
         enabled: !!shopId
@@ -27,7 +27,7 @@ const ShopPage = () => {
     const { data: productsData, isLoading, error, refetch: refetchProducts } = useQuery({
         queryKey: ['shopProducts', shopId],
         queryFn: async () => {
-            const response = await api.get(`/shop/${shopId}/products`);
+            const response = await api.get(`/shop/₹{shopId}/products`);
             return response.data;
         },
         enabled: !!shopId
@@ -155,7 +155,7 @@ const ShopPage = () => {
                                         <span className="product-stock">Stock: {product.stock}</span>
                                         <span className="product-condition">Condition: {product.condition}</span>
                                     </div>
-                                    <div className="product-price">${product.price}</div>
+                                    <div className="product-price">₹{product.price}</div>
                                     <button className="add-to-cart-btn" onClick={() => handleAddToCart(product)}>
                                         ADD TO CART
                                     </button>
@@ -180,6 +180,7 @@ const ShopPage = () => {
                 onClose={() => setIsCreateProductModalOpen(false)}
                 shopId={shopId}
                 onProductCreated={refetchProducts}
+                categories={shopData?.data?.categories || []}
             />
 
             <CartDrawer

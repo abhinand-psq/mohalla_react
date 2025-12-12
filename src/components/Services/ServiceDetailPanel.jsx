@@ -37,7 +37,7 @@ const ServiceDetailPanel = ({ service, onClose }) => {
                 <div className="detail-content">
                     <div className="detail-header">
                         <h2 className="detail-title">{title}</h2>
-                        <div className="detail-price">${priceMin} - ${priceMax}</div>
+                        <div className="detail-price">₹{priceMin} - ₹{priceMax}</div>
                     </div>
 
                     <div className="detail-meta-row">

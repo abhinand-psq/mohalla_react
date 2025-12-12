@@ -326,3 +326,68 @@
 .create-post-icon-btn:hover {
     background-color: #f6f7f8;
 }
+
+/* Responsive adjustments */
+@media (max-width: 980px) {
+
+    .community-container,
+    .community-header-content,
+    .community-tabs {
+        max-width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .community-container {
+        flex-direction: column;
+    }
+
+    .community-feed {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .community-sidebar {
+        width: 100%;
+    }
+
+    .community-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .community-icon-large {
+        margin-right: 0;
+        margin-top: -36px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .community-title-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .community-actions {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+    }
+
+    .community-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 0;
+        -webkit-overflow-scrolling: touch;
+        /* smooth scrolling on iOS */
+    }
+
+    .community-tabs::-webkit-scrollbar {
+        height: 4px;
+        /* distinct scrollbar for tabs usually helpful */
+    }
+}

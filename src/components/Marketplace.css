@@ -242,3 +242,44 @@
     background-color: #f6f7f8;
     border-color: #898989;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .marketplace-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .start-selling-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .start-selling-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .start-selling-text p {
+        width: 100%;
+    }
+
+    .create-shop-btn-blue {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Shops Grid Responsiveness - Assuming a grid container exists or adding one */
+    .shops-grid {
+        grid-template-columns: 1fr;
+        /* Force single column on mobile */
+    }
+
+    /* Adjust padding if needed */
+    .marketplace-container {
+        padding: 0 8px;
+    }
+}

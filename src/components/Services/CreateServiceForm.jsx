@@ -144,7 +144,7 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
 
                     <div className="form-row">
                         <div className="form-group">
-                            <label>Min Price ($)</label>
+                            <label>Min Price (₹)</label>
                             <input
                                 type="number"
                                 name="priceMin"
@@ -155,7 +155,7 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
                             />
                         </div>
                         <div className="form-group">
-                            <label>Max Price ($)</label>
+                            <label>Max Price (₹)</label>
                             <input
                                 type="number"
                                 name="priceMax"
