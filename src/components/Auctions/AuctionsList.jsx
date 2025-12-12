@@ -47,9 +47,11 @@ const Countdown = ({ targetDate, status }) => {
     );
 };
 
+import { useNavigate } from 'react-router-dom';
+
 const AuctionsList = ({ communityId }) => {
     const [activeFilter, setActiveFilter] = useState('All');
-    const [selectedAuction, setSelectedAuction] = useState(null);
+    const navigate = useNavigate();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const { data, isLoading, isError } = useQuery({
@@ -84,14 +86,6 @@ const AuctionsList = ({ communityId }) => {
         }).format(amount);
     };
 
-    if (selectedAuction) {
-        return (
-            <AuctionDetails
-                auction={selectedAuction}
-                onBack={() => setSelectedAuction(null)}
-            />
-        );
-    }
 
     if (isLoading) return <div className="auctions-container"><div style={{ textAlign: 'center' }}>Loading auctions...</div></div>;
     if (isError) return <div className="auctions-container"><div style={{ textAlign: 'center' }}>Error loading auctions.</div></div>;
@@ -217,7 +211,7 @@ const AuctionsList = ({ communityId }) => {
 
                                 <button
                                     className={`view-btn ${auction.status === 'active' ? 'primary' : 'outline'}`}
-                                    onClick={() => setSelectedAuction(auction)}
+                                    onClick={() => navigate(`/auction/${auction._id}`)}
                                 >
                                     {auction.status === 'active' ? 'Bid Now' : 'View Details'}
                                 </button>
