@@ -67,7 +67,7 @@ const MyAuctions = () => {
                         toast.error("Please login to view your auctions");
                         navigate('/login');
                     } else if (error.response.status === 400) {
-                        const errorMsg = error.response.data?.message || "Error fetching auctions";
+                        const errorMsg = error.response.data?.error?.message || error.response.data?.message || "Error fetching auctions";
                         toast.error(errorMsg);
                     } else if (error.response.status >= 500) {
                         toast.error("Server error. Please try again later.");

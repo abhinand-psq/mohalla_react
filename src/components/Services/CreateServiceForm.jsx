@@ -38,7 +38,7 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
         },
         onError: (error) => {
             console.error("Error creating service:", error);
-            toast.error(error.response?.data?.message || "Failed to create service");
+            toast.error(error.response?.data?.error?.message || error.response?.data?.message || "Failed to create service");
         }
     });
 

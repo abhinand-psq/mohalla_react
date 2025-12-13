@@ -84,11 +84,12 @@ const CommunityPage = () => {
     }
 
     if (isError || !communityData) {
+        const errorMsg = communityError?.response?.data?.error?.message || communityError?.response?.data?.message;
         return (
             <div className="error-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
                 <img src="/assets/robot_guard.png" alt="Oops" style={{ maxWidth: '300px', marginBottom: '20px' }} />
-                <h2>Oops! Community not found.</h2>
-                <p>The community you are looking for does not exist or has been removed.</p>
+                <h2>{errorMsg ? "We hit a snag!" : "Oops! Community not found."}</h2>
+                <p>{errorMsg || "The community you are looking for does not exist or has been removed."}</p>
                 <button className="btn btn-primary" onClick={() => navigate('/')} style={{ marginTop: '20px' }}>Go Home</button>
             </div>
         );

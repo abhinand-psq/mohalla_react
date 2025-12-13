@@ -35,7 +35,7 @@ const Marketplace = ({ communityData }) => {
     }
 
     if (error && error.response?.status !== 401) {
-        return <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>Error loading marketplace: {error.message}</div>;
+        return <div style={{ textAlign: 'center', padding: '40px', color: 'red' }}>Error loading marketplace: {error.response?.data?.error?.message || error.response?.data?.message || error.message}</div>;
     }
     console.log(marketplaceData.data);
     const shops = marketplaceData?.data?.map(shop => ({

@@ -83,10 +83,10 @@ const CreatePostModal = () => {
             setActiveTab('post');
         },
         onError: (error) => {
+            const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || 'Failed to create post';
+            toast.error(errorMsg);
             if (error.response && error.response.status === 401) {
                 navigate('/login');
-            } else {
-                toast.error(error.response?.data?.message || 'Failed to create post');
             }
         }
     });

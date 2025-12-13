@@ -117,13 +117,11 @@ const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) 
         } catch (error) {
             console.error("Error creating shop:", error);
             if (error.response) {
+                const errorMsg = error.response.data?.error?.message || error.response.data?.message || "Failed to create shop.";
+                toast.error(errorMsg);
+
                 if (error.response.status === 401) {
-                    toast.error("You must be logged in to create a shop.");
                     navigate('/login');
-                } else if (error.response.status === 403) {
-                    toast.error("You are not allowed to create a shop in this community.");
-                } else {
-                    toast.error(error.response.data?.message || "Failed to create shop.");
                 }
             } else {
                 toast.error("Network error. Please try again.");

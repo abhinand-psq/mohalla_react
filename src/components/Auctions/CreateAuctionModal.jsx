@@ -61,7 +61,7 @@ const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
             }
         } catch (error) {
             console.error("Create auction error:", error);
-            const errorMsg = error.response?.data?.message || "Failed to create auction";
+            const errorMsg = error.response?.data?.error?.message || error.response?.data?.message || "Failed to create auction";
             toast.error(errorMsg);
         } finally {
             setIsSubmitting(false);

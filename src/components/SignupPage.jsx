@@ -216,7 +216,7 @@ const SignupPage = () => {
                     <button type="submit" className="signup-btn" disabled={isPending}>
                         {isPending ? 'Signing up...' : 'Sign Up'}
                     </button>
-                    {error && <p className="error-message">{error.response?.data?.message || 'Signup failed. Please try again.'}</p>}
+                    {error && <p className="error-message">{error.response?.data?.error?.message || error.response?.data?.message || 'Signup failed. Please try again.'}</p>}
                 </form>
             </div>
         </div>

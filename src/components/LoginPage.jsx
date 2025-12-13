@@ -71,7 +71,7 @@ const LoginPage = () => {
                     <button type="submit" className="login-btn" disabled={isPending}>
                         {isPending ? 'Signing In...' : 'Sign In'}
                     </button>
-                    {error && <p className="error-message">{error.response?.data?.message || 'Login failed. Please check your credentials.'}</p>}
+                    {error && <p className="error-message">{error.response?.data?.error?.message || error.response?.data?.message || 'Login failed. Please check your credentials.'}</p>}
                 </form>
 
                 <div className="login-footer">
