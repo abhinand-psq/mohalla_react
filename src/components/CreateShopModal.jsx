@@ -166,7 +166,7 @@ const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) 
                                 <input
                                     type="text"
                                     name="name"
-                                    placeholder="e.g., Tech Haven Store"
+                                    placeholder="e.g. Shop Name"
                                     value={formData.name}
                                     onChange={handleInputChange}
                                     maxLength={50}

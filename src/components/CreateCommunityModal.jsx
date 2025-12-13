@@ -145,7 +145,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
                                             type="text"
                                             name="name"
                                             className="form-input"
-                                            placeholder="e.g., Technology Enthusiasts"
+                                            placeholder="e.g., Community Name"
                                             value={formData.name}
                                             onChange={handleInputChange}
                                             maxLength={50}
@@ -268,7 +268,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
                                         type="text"
                                         name="allowedMarketplaceCategories"
                                         className="form-input"
-                                        placeholder="dress, chocolate, phone"
+                                        placeholder="e.g. electronics, clothing, books"
                                         value={formData.allowedMarketplaceCategories}
                                         onChange={handleInputChange}
                                     />

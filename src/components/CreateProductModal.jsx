@@ -115,7 +115,7 @@ const CreateProductModal = ({ isOpen, onClose, shopId, onProductCreated, categor
                                 name="title"
                                 value={formData.title}
                                 onChange={handleInputChange}
-                                placeholder="e.g., Organic Face Serum"
+                                placeholder="e.g., Product Name"
                                 maxLength={100}
                                 required
                             />

@@ -109,7 +109,7 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
                             name="title"
                             value={formData.title}
                             onChange={handleChange}
-                            placeholder="e.g. Professional House Cleaning"
+                            placeholder="e.g. House Cleaning Service"
                             required
                         />
                     </div>

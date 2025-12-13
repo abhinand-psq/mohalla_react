@@ -50,7 +50,7 @@ const LoginPage = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="e.g. abhinnad@example.com"
+                            placeholder="e.g. user@example.com"
                             required
                         />
                     </div>

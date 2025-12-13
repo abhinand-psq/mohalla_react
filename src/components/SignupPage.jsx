@@ -76,7 +76,7 @@ const SignupPage = () => {
                                     name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
-                                    placeholder="e.g. Abhinnad"
+                                    placeholder="e.g. John"
                                     required
                                 />
                             </div>
@@ -88,7 +88,7 @@ const SignupPage = () => {
                                     name="lastName"
                                     value={formData.lastName}
                                     onChange={handleChange}
-                                    placeholder="e.g. P"
+                                    placeholder="e.g. Doe"
                                     required
                                 />
                             </div>
@@ -103,7 +103,7 @@ const SignupPage = () => {
                                     name="username"
                                     value={formData.username}
                                     onChange={handleChange}
-                                    placeholder="e.g. abhinand"
+                                    placeholder="e.g. johndoe"
                                     required
                                 />
                             </div>
@@ -115,7 +115,7 @@ const SignupPage = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    placeholder="e.g. abhinnad@example.com"
+                                    placeholder="e.g. user@example.com"
                                     required
                                 />
                             </div>
@@ -146,7 +146,7 @@ const SignupPage = () => {
                                     name="state"
                                     value={formData.state}
                                     onChange={handleChange}
-                                    placeholder="e.g. Kerala"
+                                    placeholder="e.g. State"
                                 />
                             </div>
                             <div className="form-group">
@@ -157,7 +157,7 @@ const SignupPage = () => {
                                     name="district"
                                     value={formData.district}
                                     onChange={handleChange}
-                                    placeholder="e.g. Kozhikode"
+                                    placeholder="e.g. District"
                                 />
                             </div>
                         </div>
@@ -171,7 +171,7 @@ const SignupPage = () => {
                                     name="taluk"
                                     value={formData.taluk}
                                     onChange={handleChange}
-                                    placeholder="e.g. Kunnamangalam"
+                                    placeholder="e.g. Taluk"
                                 />
                             </div>
                             <div className="form-group">
@@ -182,7 +182,7 @@ const SignupPage = () => {
                                     name="block"
                                     value={formData.block}
                                     onChange={handleChange}
-                                    placeholder="e.g. Kunnamangalam"
+                                    placeholder="e.g. Block"
                                 />
                             </div>
                         </div>
@@ -196,7 +196,7 @@ const SignupPage = () => {
                                     name="panchayath"
                                     value={formData.panchayath}
                                     onChange={handleChange}
-                                    placeholder="e.g. Peruvayal Grama Panchayath"
+                                    placeholder="e.g. Grama Panchayath"
                                 />
                             </div>
                             <div className="form-group">
@@ -207,7 +207,7 @@ const SignupPage = () => {
                                     name="ward"
                                     value={formData.ward}
                                     onChange={handleChange}
-                                    placeholder="e.g. 17"
+                                    placeholder="e.g. Ward No"
                                 />
                             </div>
                         </div>

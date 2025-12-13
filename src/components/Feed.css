@@ -123,9 +123,66 @@
 }
 
 .empty-feed-notice p {
-    margin: 0;
-    color: var(--color-text-secondary);
-    font-size: 15px;
-    max-width: 400px;
-    line-height: 1.5;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 576px) {
+    .feed {
+        margin: 0;
+        padding-top: 12px;
+    }
+
+    .create-post-container {
+        margin: 0 12px 16px 12px;
+        padding: 8px 12px;
+        border-radius: 20px !important;
+        /* Less aggressive radius on mobile */
+    }
+
+    .create-post-input {
+        padding: 0 12px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .create-post-icon-btn {
+        padding: 8px;
+    }
+
+    .user-avatar-small {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .filter-bar {
+        padding-left: 12px;
+        /* Align with content */
+    }
+}
+
+@media (max-width: 370px) {
+
+    /* Ultra small screens like 360px */
+    .create-post-container {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .create-post-icon-btn {
+        display: none;
+        /* Hide icons on very small screens to give input space OR keep one */
+    }
+
+    .create-post-icon-btn:first-of-type {
+        display: flex;
+        /* Keep image icon, hide link icon maybe? */
+    }
+
+    .create-post-input {
+        font-size: 13px;
+    }
 }

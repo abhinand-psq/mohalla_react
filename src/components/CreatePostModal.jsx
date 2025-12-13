@@ -29,6 +29,10 @@ const CreatePostModal = () => {
         retry: false
     });
 
+
+
+
+
     const communities = communitiesData?.data?.map(comm => ({
         id: comm.id,
         name: comm.name,

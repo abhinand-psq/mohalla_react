@@ -128,7 +128,7 @@ const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
                         <input
                             type="text"
                             className="form-input"
-                            placeholder="e.g., iPhone 14 Pro Max - 256GB"
+                            placeholder="e.g., Item Name"
                             maxLength={100}
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}

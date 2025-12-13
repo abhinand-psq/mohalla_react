@@ -234,8 +234,29 @@
     }
 }
 
-@media (min-width: 769px) {
-    .menu-toggle-btn {
+@media (max-width: 480px) {
+    .logo-text {
         display: none;
+        /* Hide logo text on small screens to save space */
+    }
+
+    .navbar-center {
+        margin: 0 0 0 12px;
+    }
+
+    .search-bar {
+        padding: 0 12px;
+        height: 36px;
+    }
+
+    .navbar {
+        padding: 0 12px;
+        height: 56px;
+        /* Slightly shorter navbar */
+    }
+
+    .reddit-icon {
+        width: 32px;
+        height: 32px;
     }
 }

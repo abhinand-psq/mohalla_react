@@ -10,6 +10,7 @@ export const useSignup = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['auth', 'user'] });
+            queryClient.invalidateQueries({ queryKey: ['myCommunitiesMin'] });
         }
     });
 };
@@ -23,6 +24,7 @@ export const useLogin = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['auth', 'user'] });
+            queryClient.invalidateQueries({ queryKey: ['myCommunitiesMin'] });
         }
     });
 };
@@ -35,6 +37,7 @@ export const useLogout = () => {
         },
         onSuccess: () => {
             queryClient.setQueryData(['auth', 'user'], null);
+            queryClient.setQueryData(['myCommunitiesMin'], null);
         }
     });
 };
