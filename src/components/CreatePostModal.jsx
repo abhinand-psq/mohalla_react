@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { useCreatePost } from '../context/CreatePostContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -137,7 +138,7 @@ const CreatePostModal = () => {
         }
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div className="create-post-overlay" onClick={(e) => {
             if (e.target === e.currentTarget) closeCreatePostModal();
         }}>
@@ -386,7 +387,8 @@ const CreatePostModal = () => {
                     </button>
                 </div>
             </div>
-        </div >
+        </div >,
+        document.body
     );
 };
 

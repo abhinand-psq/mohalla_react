@@ -337,3 +337,24 @@
 .btn-create:hover {
     background-color: #0060a8;
 }
+
+@media (max-width: 600px) {
+    .create-shop-modal {
+        max-height: 100vh;
+        height: 100%;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .modal-footer {
+        padding: 16px;
+        background-color: white;
+        border-top: 1px solid #edeff1;
+        position: sticky;
+        bottom: 0;
+    }
+}

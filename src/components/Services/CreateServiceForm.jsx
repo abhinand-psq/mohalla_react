@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { useMutation } from '@tanstack/react-query';
 import api from '../../api/axios';
 import './CreateServiceForm.css';
@@ -93,7 +94,7 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
         createServiceMutation.mutate(data);
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div className="create-service-overlay" onClick={onClose}>
             <div className="create-service-modal" onClick={e => e.stopPropagation()}>
                 <div className="modal-header">
@@ -226,7 +227,8 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

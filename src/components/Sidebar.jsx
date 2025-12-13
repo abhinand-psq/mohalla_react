@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
+import CreateCommunityModal from './CreateCommunityModal';
 import './Sidebar.css';
 
 const Sidebar = () => {
     const location = useLocation();
     const currentPath = location.pathname;
+    const [isCreateCommunityModalOpen, setIsCreateCommunityModalOpen] = useState(false);
+
     const { data: communitiesData, isLoading, error } = useQuery({
         queryKey: ['myCommunities'],
         queryFn: async () => {
@@ -53,6 +56,18 @@ const Sidebar = () => {
 
             <div className="sidebar-section">
                 <h3 className="sidebar-title">Communities</h3>
+                <button
+                    className="create-community-btn-sidebar"
+                    onClick={() => setIsCreateCommunityModalOpen(true)}
+                >
+                    <span className="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </span>
+                    Create Community
+                </button>
                 {isLoading ? (
                     <div className="sidebar-loading">Loading...</div>
                 ) : (isUnauthorized || isEmpty) ? (
@@ -82,6 +97,11 @@ const Sidebar = () => {
                     ))
                 )}
             </div>
+
+            <CreateCommunityModal
+                isOpen={isCreateCommunityModalOpen}
+                onClose={() => setIsCreateCommunityModalOpen(false)}
+            />
         </aside>
     );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import api from '../api/axios';
@@ -131,7 +132,7 @@ const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) 
         }
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div className="modal-overlay">
             <div className="create-shop-modal">
                 <button className="close-modal-btn" onClick={onClose}>
@@ -294,7 +295,8 @@ const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) 
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -110,7 +111,7 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
         createCommunityMutation.mutate(data);
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="modal-header">
@@ -317,7 +318,8 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import './CreateAuctionModal.css';
 import api from '../../api/axios';
 import { toast } from 'sonner';
@@ -68,7 +69,7 @@ const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
         }
     };
 
-    return (
+    return ReactDOM.createPortal(
         <div className="modal-overlay" onClick={onClose}>
             <div className="create-auction-modal" onClick={e => e.stopPropagation()}>
                 {/* Header */}
@@ -209,7 +210,8 @@ const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
