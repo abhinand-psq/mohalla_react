@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../api/axios';
 import './CreateCommunityModal.css';
+import LoadingOverlay from './LoadingOverlay';
 
 const CreateCommunityModal = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
@@ -312,12 +313,13 @@ const CreateCommunityModal = ({ isOpen, onClose }) => {
                                 onClick={handleCreate}
                                 disabled={createCommunityMutation.isPending}
                             >
-                                {createCommunityMutation.isPending ? 'Creating...' : 'Create Community'}
+                                Create Community
                             </button>
                         </>
                     )}
                 </div>
             </div>
+            <LoadingOverlay isOpen={createCommunityMutation.isPending} message="Creating Community..." />
         </div>,
         document.body
     );

@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Rating } from 'react-simple-star-rating';
 import './ServiceDetailPanel.css';
 
 const ServiceDetailPanel = ({ service, onClose }) => {
+    const [rating, setRating] = useState(0);
+
+    const handleRating = (rate) => {
+        console.log(rate);
+        setRating(rate);
+        console.log(rating);
+        // Logic to submit rating would go here
+    };
+
     if (!service) return null;
 
     const {
@@ -65,6 +75,18 @@ const ServiceDetailPanel = ({ service, onClose }) => {
                     <div className="detail-description">
                         <h3>Description</h3>
                         <p>{description}</p>
+                    </div>
+
+                    <div className="service-rating-input">
+                        <h4>Rate this Service</h4>
+                        <Rating
+                            onClick={handleRating}
+                            initialValue={5}
+                            size={30}
+                            transition
+                            allowFraction
+                            SVGstyle={{ display: 'inline' }}
+                        />
                     </div>
 
                     <div className="detail-actions">

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import api from '../api/axios';
 import './CreateShopModal.css';
+import LoadingOverlay from './LoadingOverlay';
 
 const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) => {
     const { subreddit: communityId } = useParams();
@@ -288,13 +289,14 @@ const CreateShopModal = ({ isOpen, onClose, onShopCreated, allowedCategories }) 
 
                                 <button className="btn-cancel" onClick={onClose} disabled={isSubmitting}>Cancel</button>
                                 <button className="btn-create" onClick={handleCreate} disabled={isSubmitting}>
-                                    {isSubmitting ? 'Creating...' : 'Create Shop'}
+                                    Create Shop
                                 </button>
                             </div>
                         </>
                     )}
                 </div>
             </div>
+            <LoadingOverlay isOpen={isSubmitting} message="Creating Shop..." />
         </div>,
         document.body
     );

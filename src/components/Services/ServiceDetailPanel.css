@@ -276,3 +276,20 @@
     padding-top: 16px;
     border-top: 1px solid #f3f4f6;
 }
+
+/* Service Rating Section */
+.service-rating-input {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.service-rating-input h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+}

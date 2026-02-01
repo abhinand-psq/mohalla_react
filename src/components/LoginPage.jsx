@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogin } from '../hooks/useAuth';
 import './LoginPage.css';
+import communityHeart from '../assets/community-heart.png';
+import AuthNavbar from './AuthNavbar';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -35,47 +37,55 @@ const LoginPage = () => {
 
     return (
         <div className="login-container">
+            <AuthNavbar />
             <div className="login-card">
-                <div className="login-header">
-                    <h2>Welcome Back</h2>
-                    <p>Please enter your details to sign in</p>
-                </div>
-
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="e.g. user@example.com"
-                            required
-                        />
+                <div className="login-content">
+                    <div className="login-image-section">
+                        <img src={communityHeart} alt="Community Heart" className="auth-image" />
                     </div>
+                    <div className="login-form-section">
+                        <div className="login-header">
+                            <h2>Welcome Back</h2>
+                            <p>Please enter your details to sign in</p>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Enter your password"
-                            required
-                        />
+                        <form className="login-form" onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="e.g. user@example.com"
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter your password"
+                                    required
+                                />
+                            </div>
+
+                            <button type="submit" className="login-btn" disabled={isPending}>
+                                {isPending ? 'Signing In...' : 'Sign In'}
+                            </button>
+                            {error && <p className="error-message">{error.response?.data?.error?.message || error.response?.data?.message || 'Login failed. Please check your credentials.'}</p>}
+                        </form>
+
+                        <div className="login-footer">
+                            <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+                        </div>
                     </div>
-
-                    <button type="submit" className="login-btn" disabled={isPending}>
-                        {isPending ? 'Signing In...' : 'Sign In'}
-                    </button>
-                    {error && <p className="error-message">{error.response?.data?.error?.message || error.response?.data?.message || 'Login failed. Please check your credentials.'}</p>}
-                </form>
-
-                <div className="login-footer">
-                    <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
                 </div>
             </div>
         </div>

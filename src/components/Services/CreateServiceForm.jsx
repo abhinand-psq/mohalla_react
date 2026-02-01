@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { useMutation } from '@tanstack/react-query';
 import api from '../../api/axios';
 import './CreateServiceForm.css';
+import LoadingOverlay from '../LoadingOverlay';
 
 import { toast } from 'sonner';
 
@@ -222,11 +223,12 @@ const CreateServiceForm = ({ onClose, communityId, onSuccess, allowedCategories 
                     <div className="form-actions">
                         <button type="button" className="cancel-btn" onClick={onClose} disabled={createServiceMutation.isPending}>Cancel</button>
                         <button type="submit" className="submit-btn" disabled={createServiceMutation.isPending}>
-                            {createServiceMutation.isPending ? 'Creating...' : 'Create Service'}
+                            Create Service
                         </button>
                     </div>
                 </form>
             </div>
+            <LoadingOverlay isOpen={createServiceMutation.isPending} message="Creating Service..." />
         </div>,
         document.body
     );

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './CreateAuctionModal.css';
 import api from '../../api/axios';
 import { toast } from 'sonner';
+import LoadingOverlay from '../LoadingOverlay';
 
 const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
     const [title, setTitle] = useState('');
@@ -206,10 +207,11 @@ const CreateAuctionModal = ({ onClose, onSubmit, communityId }) => {
                 <div className="modal-footer">
                     <button className="btn-cancel" onClick={onClose} disabled={isSubmitting}>Cancel</button>
                     <button className="btn-create" onClick={handleSubmit} disabled={isSubmitting}>
-                        {isSubmitting ? 'Creating...' : 'Create Auction'}
+                        Create Auction
                     </button>
                 </div>
             </div>
+            <LoadingOverlay isOpen={isSubmitting} message="Creating Auction..." />
         </div>,
         document.body
     );
