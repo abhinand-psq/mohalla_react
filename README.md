@@ -1,16 +1,34 @@
-# React + Vite
+## 🌐 Live Preview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lightweight preview deployment of MohallaHub is available at:
 
-Currently, two official plugins are available:
+**https://mohalla-react.vercel.app/**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This preview allows visitors to explore the platform and understand how the system works without setting up the project locally.
 
-## React Compiler
+### What You Can Explore
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Community Feed & Local Communication
+* Service Listings
+* Hyperlocal Marketplace
+* Auction & Bidding System
+* Community-Based User Experience
+* Location-Oriented Community Structure
 
-## Expanding the ESLint configuration
+### Purpose of the Preview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The preview deployment is intended to demonstrate the core concept and functionality of MohallaHub.
+
+MohallaHub is a Hyperlocal Community Platform designed to digitize neighborhood activities by providing a dedicated digital space for communication, services, local commerce, and community engagement within verified geographical communities.
+
+### Documentation
+
+For a deeper understanding of the platform, please refer to:
+
+* System Architecture
+* Database Design
+* API Documentation
+* Feature Documentation
+* Future Enhancements
+
+These documents explain how MohallaHub is designed, the technologies used, and the engineering decisions behind the platform.
