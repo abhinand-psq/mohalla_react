@@ -21,14 +21,6 @@ The preview deployment is intended to demonstrate the core concept and functiona
 
 MohallaHub is a Hyperlocal Community Platform designed to digitize neighborhood activities by providing a dedicated digital space for communication, services, local commerce, and community engagement within verified geographical communities.
 
-### Documentation
-
-For a deeper understanding of the platform, please refer to:
-
-* System Architecture
-* Database Design
-* API Documentation
-* Feature Documentation
-* Future Enhancements
-
-These documents explain how MohallaHub is designed, the technologies used, and the engineering decisions behind the platform.
+we made a devops platform from ci/cd to gitops to mimic real world deployment scenario,  please refer to:
+[DevOpsified Full Stack](https://github.com/abhinand-psq/mohallahub_devopsified.git)
+[DevOps EcoSystem](https://github.com/abhinand-psq/devopsified-FullStack-applciation.git)
